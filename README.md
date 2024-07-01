@@ -1,1 +1,1 @@
-# AutoFlow
+AutoFlow is a Flask-based server project designed to facilitate the management of workflows and tasks. It utilizes Flask for server setup and route definition, SQLAlchemy for PostgreSQL database connection, and middleware for efficient JSON parsing. Through meticulously crafted routes, AutoFlow supports robust management capabilities for workflows and tasks. The project is configured to listen on port 5000, allowing for easy access and integration.
