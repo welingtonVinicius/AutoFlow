@@ -28,7 +28,7 @@ bp = Blueprint('workflow_app', __name__)
 # Utility for error response
 def error_response(message, status_code):
     response = jsonify({'error': message})
-    response.status_code = status_config
+    response.status_code = status_code  # Corrected variable name
     return response
 
 @bp.route('/workflows', methods=['POST'])
@@ -75,11 +75,13 @@ def delete_workflow(id):
 
 @bp.route('/workflows', methods=['GET'])
 def get_workflows():
-    try:
+    # Check if a name parameter is provided for search
+    name_query = request.args.get('name')
+    if name_query:
+        workflows = Workflow.query.filter(Workflow.name.ilike(f"%{name_query}%")).all()
+    else:
         workflows = Workflow.query.all()
-        return jsonify([{'id': w.id, 'name': w.name} for w in workflows]), 200
-    except SQLAlchemyError as e:
-        return error_response(str(e.orig), 500)
+    return jsonify([{'id': w.id, 'name': w.name} for w in workflows]), 200
 
 
 @bp.route('/workflows/<int:workflow_id>/tasks', methods=['POST'])
