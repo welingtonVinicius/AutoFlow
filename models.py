@@ -4,19 +4,19 @@ from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
-class Workflow(db.Model):
+class WorkflowModel(db.Model):
     __tablename__ = 'workflows'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255), nullable=False)
-    description = Column(String(255), nullable=True)
-    status = Column(String(50), nullable=False)
+    workflow_id = Column(Integer, primary_key=True)
+    workflow_name = Column(String(255), nullable=False)
+    workflow_description = Column(String(255), nullable=True)
+    workflow_status = Column(String(50), nullable=False)
 
-    tasks = relationship('Task', backref='workflow')
+    associated_tasks = relationship('TaskModel', backref='associated_workflow', lazy='dynamic')
 
-class Task(db.Model):
+class TaskModel(db.Model):
     __tablename__ = 'tasks'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(255), nullable=False)
-    description = Column(String(255), nullable=True)
-    workflow_id = Column(Integer, ForeignKey('workflows.id'), nullable=False)
-    status = Column(String(50), nullable=False)
+    task_id = Column(Integer, primary_key=True)
+    task_title = Column(String(255), nullable=False)
+    task_description = Column(String(255), nullable=True)
+    associated_workflow_id = Column(Integer, ForeignKey('workflows.workflow_id'), nullable=False)
+    task_status = Column(String(50), nullable=False)
