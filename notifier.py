@@ -16,11 +16,11 @@ def send_email_notification(task_name, task_status, recipient_email):
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = recipient_email
     msg['Subject'] = f'Task Notification: {task_name}'
-
-    body = f"Congratulations! The task '{task_name}' was completed successfully." if task_status.lower() == "success" else f"Alert: The task '{task_name}' failed to complete."
-    
+    if task_status.lower() == "success":
+        body = f"Congratulations! The task '{task_name}' was completed successfully."
+    else:
+        body = f"Alert: The task '{task_name}' failed to complete."
     msg.attach(MIMEText(body, 'plain'))
-
     try:
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
