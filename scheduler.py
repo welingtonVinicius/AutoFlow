@@ -8,25 +8,35 @@ load_dotenv()
 app = Flask(__name__)
 
 def update_task_status():
+    """Handle the updating of task statuses."""
     print("Updating task status...")
 
 def send_notifications():
+    """Send notifications to users."""
     print("Sending notification...")
 
-scheduler = BackgroundScheduler(daemon=True)
+def configure_scheduler(scheduler):
+    """Configure the scheduler with jobs."""
+    update_interval = int(os.getenv('UPDATE_TASK_INTERVAL', '60'))
+    notification_interval = int(os.getenv('NOTIFICATION_INTERVAL', '30'))
 
-scheduler.add_job(update_task_status, 'interval', minutes=int(os.getenv('UPDATE_TASK_INTERVAL', '60')))
-scheduler.add_job(send_notifications, 'interval', minutes=int(os.getenv('NOTIFICATION_INTERVAL', '30')))
+    scheduler.add_job(update_task_status, 'interval', minutes=update_interval)
+    scheduler.add_job(send_notifications, 'interval', minutes=notification_interval)
 
-@app.before_first_request
-def start_scheduler():
+def init_scheduler():
+    """Initialize and start the scheduler."""
+    scheduler = BackgroundScheduler(daemon=True)
+    configure_scheduler(scheduler)
     scheduler.start()
 
-def export_scheduler_start():
-    start_scheduler()
+@app.before_first_request
+def prepare_app():
+    """Prepare app by starting the scheduler before the first request."""
+    init_scheduler()
 
 @app.route('/')
 def home():
+    """Home route."""
     return "Application is running!"
 
 if __name__ == '__main__':
