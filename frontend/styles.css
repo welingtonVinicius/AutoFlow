@@ -1,0 +1,59 @@
+body, html {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+header {
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+.workflow-form {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+.workflow-list {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.workflow-list li {
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+.workflow-details {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.task-form {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+.task-list {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.task-list li {
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+@media (max-width: 768px) {
+  .workflow-form, .workflow-list, .workflow-details, .task-form, .task-list {
+    margin: 10px;
+    padding: 10px;
+  }
+}
