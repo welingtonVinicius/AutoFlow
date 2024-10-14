@@ -1,9 +1,23 @@
 const API_ENDPOINT = process.env.API_ENDPOINT || 'https://your-backend-api.com';
 
-const fetchTasks = async () => {
+// Caching setup
+let tasksCache = null;
+let cacheTimestamp = 0;
+const CACHE_TIMEOUT = 30000; // 30 seconds cache timeout
+
+const fetchTasks = async (forceUpdate = false) => {
+  const currentTime = new Date().getTime();
+  if (!forceUpdate && tasksCache && (currentTime - cacheTimestamp) < CACHE_TIMEOUT) {
+    console.log('Returning tasks from cache');
+    displayTasks(tasksCache);
+    return;
+  }
+
   try {
     const response = await fetch(`${API_ENDPOINT}/tasks`);
     const data = await response.json();
+    tasksCache = data;
+    cacheTimestamp = currentTime;
     displayTasks(data);
   } catch (error) {
     console.error("Failed to fetch tasks:", error);
@@ -49,7 +63,7 @@ const createTask = async (task) => {
       body: JSON.stringify(task),
     });
     const newTask = await response.json();
-    fetchTasks();
+    fetchTasks(true); // Force update cache
   } catch (error) {
     console.error("Failed to create task:", error);
   }
@@ -63,7 +77,7 @@ const updateTask = async (id, updates) => {
       body: JSON.stringify(updates),
     });
     const updatedTask = await response.json();
-    fetchTasks();
+    fetchTasks(true); // Force update cache
   } catch (error) {
     console.error("Failed to update task:", error);
   }
@@ -74,7 +88,7 @@ const deleteTask = async (id) => {
     await fetch(`${API_ENDPOINT}/tasks/${id}`, {
       method: 'DELETE',
     });
-    fetchTasks();
+    fetchTasks(true); // Force update cache
   } catch (error) {
     console.error("Failed to delete task:", error);
   }
