@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from 'react';
 
-export const WorkflowForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+export const WorkflowCreationForm = ({ onWorkflowSubmit }) => {
+  const [workflowName, setWorkflowName] = useState('');
+  const [workflowDescription, setWorkflowDescription] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (!name || !description) {
+    if (!workflowName || !workflowDescription) {
       alert('Please fill in all fields');
       return;
     }
-    onSubmit({ name, description });
-    setName('');
-    setDescription('');
+    onWorkflowSubmit({ name: workflowName, description: workflowDescription });
+    setWorkflowName('');
+    setWorkflowDescription('');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <div>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={workflowName}
+          onChange={(e) => setWorkflowName(e.target.value)}
           placeholder="Name"
           required
         />
       </div>
       <div>
         <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={workflowDescription}
+          onChange={(e) => setWorkflowDescription(e.target.value)}
           placeholder="Description"
           required
         />
@@ -39,11 +39,11 @@ export const WorkflowForm = ({ onSubmit }) => {
   );
 };
 
-export const WorkflowList = ({ workflows, onWorkflowSelect }) => {
+export const WorkflowListView = ({ workflows, onSelectWorkflow }) => {
   return (
     <ul>
       {workflows.map((workflow) => (
-        <li key={workflow.id} onClick={() => onWorkflowSelect(workflow)}>
+        <li key={workflow.id} onClick={() => onSelectWorkflow(workflow)}>
           {workflow.name}
         </li>
       ))}
@@ -51,16 +51,16 @@ export const WorkflowList = ({ workflows, onWorkflowSelect }) => {
   );
 };
 
-export const WorkflowDetail = ({ selectedWorkflow, onTaskUpdate }) => {
-  const [newTask, setNewTask] = useState('');
+export const WorkflowDetailsView = ({ selectedWorkflow, onUpdateTask }) => {
+  const [taskName, setTaskName] = useState('');
 
-  const addTask = () => {
-    if (!newTask) {
+  const handleAddTask = () => {
+    if (!taskName) {
       alert('Please enter a task name');
       return;
     }
-    onTaskUpdate([...selectedWorkflow.tasks, { name: newTask, status: 'pending' }]);
-    setNewTask('');
+    onUpdateTask([...selectedWorkflow.tasks, { name: taskName, status: 'pending' }]);
+    setTaskName('');
   };
 
   if (!selectedWorkflow) return <div>Select a workflow to see details</div>;
@@ -75,11 +75,11 @@ export const WorkflowDetail = ({ selectedWorkflow, onTaskUpdate }) => {
       <div>
         <input
           type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          value={taskName}
+          onChange={(e) => setTaskName(e.target.value)}
           placeholder="New task name"
         />
-        <button onClick={addTask}>Add Task</button>
+        <button onClick={handleAddTask}>Add Task</button>
       </div>
     </div>
   );
