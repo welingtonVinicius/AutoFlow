@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 
-export const AddTaskForm = ({ onTaskAdd }) => {
+export const TaskCreationForm = ({ onNewTaskAdded }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskWorkflow, setTaskWorkflow] = useState('');
 
-  const handleFormSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     if (!taskTitle || !taskDescription || !taskWorkflow) {
       alert('Please fill in all the fields.');
       return;
     }
 
-    onTaskAdd({ title: taskTitle, description: taskDescription, workflow: taskWorkflow });
+    onNewTaskAdded({ title: taskTitle, description: taskDescription, workflow: taskWorkflow });
     setTaskTitle('');
     setTaskDescription('');
     setTaskWorkflow('');
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Title"
@@ -44,7 +44,7 @@ export const AddTaskForm = ({ onTaskAdd }) => {
   );
 };
 
-export const TaskListView = ({ tasks }) => {
+export const TaskListDisplay = ({ tasks }) => {
   return (
     <div>
       {tasks.map((task, index) => (
